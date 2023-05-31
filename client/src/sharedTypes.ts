@@ -14,6 +14,7 @@ export interface IGameInfo {
     isNewGame: boolean
     p1: IPlayerInfo
     p2: IPlayerInfo
+    wager: Long
     turn: number
     index: number
 }

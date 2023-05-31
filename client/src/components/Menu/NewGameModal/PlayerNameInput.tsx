@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { FormFeedback, FormGroup, Input, Label } from "reactstrap"
+import { FormFeedback, FormGroup, Input } from "reactstrap"
 
 interface IPlayerNameInputProps {
     readonly playerNumber: 1 | 2
@@ -15,7 +15,7 @@ export default class PlayerNameInput extends Component<IPlayerNameInputProps, IP
         super(props)
         this.state = {
             isValid: true,
-            name: `Player ${props.playerNumber}`,
+            name: ``,
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -28,17 +28,16 @@ export default class PlayerNameInput extends Component<IPlayerNameInputProps, IP
                 <h2>
                     Player {playerNumber}(<span className={`p${playerNumber}_name`}>{color}</span>)
                 </h2>
-                <Label for={`p${playerNumber}Name`}>Player {playerNumber}'s Name:</Label>
                 <Input
                     type="text"
                     invalid={!this.state.isValid}
-                    name={`p${playerNumber}Name`}
+                    placeholder={`Player ${playerNumber} address`}
                     maxLength={45}
                     onChange={this.handleChange}
                     valid={this.state.isValid}
                     value={this.state.name}
                 />
-                <FormFeedback valid={false}>Sorry, that is not a valid name</FormFeedback>
+                <FormFeedback valid={false}>Sorry, that is not a valid address</FormFeedback>
             </FormGroup>
         )
     }

@@ -12,6 +12,7 @@ import Board from "./Board/Board"
 import BoardMenu from "./BoardMenu/BoardMenu"
 import ScoreBar from "./BoardMenu/ScoreBar"
 import GameOverModal from "./GameOverModal"
+import Long from "long"
 
 interface IGameContainerProps {
     location: any
@@ -32,6 +33,7 @@ interface IGameContainerState {
     last: Date
     p2: IPlayerInfo
     p1: IPlayerInfo
+    wager: Long
     selected: {
         [key: string]: boolean
     }
@@ -58,6 +60,7 @@ export default class GameContainer extends Component<IGameContainerProps, IGameC
             name: "Player 2",
             score: 0,
         },
+        wager: Long.ZERO,
         selected: {},
         client: undefined,
         creator: "",
@@ -100,6 +103,7 @@ export default class GameContainer extends Component<IGameContainerProps, IGameC
                 name: game.p2.name,
                 score: game.p2.score,
             },
+            wager: game.wager
         })
 
         if (this.currentPlayerIsAI()) {
@@ -247,6 +251,7 @@ export default class GameContainer extends Component<IGameContainerProps, IGameC
                     turn={this.state.board.current_player}
                     p1={this.state.p1}
                     p2={this.state.p2}
+                    wager={this.state.wager.toNumber()}
                 />
                 <Board
                     onSquareClick={this.handleSquareClick}
@@ -268,14 +273,15 @@ export default class GameContainer extends Component<IGameContainerProps, IGameC
             saved.shift()
             Lockr.set("saved_games", saved)
         } else {
-            const { board, created, p1, p2 } = this.state
+            const { board, created, p1, p2, wager } = this.state
             const gameInfo: IGameInfo = {
                 board: board.current_board,
                 created: created as Date,
                 isNewGame: false,
-                last: new Date(), // .toDateString(),
+                last: new Date(),
                 p1: p1 as IPlayerInfo,
                 p2: p2 as IPlayerInfo,
+                wager: wager,
                 turn: board.current_player,
                 index: -1,
             }

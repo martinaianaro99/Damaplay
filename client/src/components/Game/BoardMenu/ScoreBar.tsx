@@ -1,7 +1,6 @@
 import React from "react"
 import { IPlayerInfo } from "../../../sharedTypes"
 import { Player } from "../../../util/MoveTree"
-import NameInput from "./NameInput"
 import "./ScoreBar.css"
 
 interface IScoreBarProps {
@@ -9,35 +8,32 @@ interface IScoreBarProps {
     turn: Player
     p1: IPlayerInfo
     p2: IPlayerInfo
+    wager: number
 }
 
+
 const ScoreBar = (props: IScoreBarProps) => {
-    const p1OnChange = (name: string) => props.updateName("p1", name)
-    const p2OnChange = (name: string) => props.updateName("p2", name)
     return (
-        <div id="score">
-            <div>
-                <NameInput
-                    color="black"
-                    className="scoreNameInput"
-                    defaultValue={props.p1.name}
-                    turn={props.turn === 1}
-                    onChange={p1OnChange}
-                    style={{ marginLeft: "20px" }}
-                />
-                : <span className="score">{props.p1.score}</span>
-            </div>
-            <div className="float-right">
-                <NameInput
-                    color="red"
-                    className="scoreNameInput"
-                    defaultValue={props.p2.name}
-                    turn={props.turn === 2}
-                    onChange={p2OnChange}
-                />
-                : <span className="score">{props.p2.score}</span>
-            </div>
-        </div>
+        <div id="score" style={{ display: 'flex', alignItems: 'center' }}>
+  <div style={{ flex: 1 }}>
+    <span className="truncated-text" style={{ marginLeft: "20px", color: "black" }}>
+      {props.p1.name.length > 12 ? props.p1.name.substring(0, 12) + "..." : props.p1.name}
+    </span>
+    : {props.p1.score}
+  </div>
+  <div style={{ marginLeft: "20px" }}>
+    wager: {props.wager}💰
+  </div>
+  <div style={{ flex: 1, textAlign: "right" }}>
+    <span className="truncated-text" style={{color:"red"}}>
+      {props.p2.name.length > 12 ? props.p2.name.substring(0, 12) + "..." : props.p2.name}
+    </span>
+    : {props.p2.score}
+  </div>
+</div>
+
+
+
     )
 }
 export default ScoreBar

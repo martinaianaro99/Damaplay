@@ -25,7 +25,7 @@ declare module "../../checkers_stargateclient" {
 
 declare module "../../checkers_signingstargateclient" {
     interface CheckersSigningStargateClient {
-        createGuiGame(creator: string, black: string, red: string): Promise<string>
+        createGuiGame(creator: string, black: string, red: string, wager: Long): Promise<string>
         playGuiMoves(creator: string, gameIndex: string, positions: number[][]): Promise<(Pos | undefined)[]>
     }
 }
@@ -65,8 +65,9 @@ CheckersSigningStargateClient.prototype.createGuiGame = async function (
     creator: string,
     black: string,
     red: string,
+    wager: Long,
 ): Promise<string> {
-    const result: DeliverTxResponse = await this.createGame(creator, black, red, "stake", Long.ZERO, "auto")
+    const result: DeliverTxResponse = await this.createGame(creator, black, red, "stake", wager, "auto")
     const logs: Log[] = JSON.parse(result.rawLog!)
     return getCreatedGameId(getCreateGameEvent(logs[0])!)
 }

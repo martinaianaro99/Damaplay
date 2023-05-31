@@ -33,6 +33,7 @@ export function storedToGameInfo(game: StoredGame): IGameInfo {
             is_ai: false,
             score: 0,
         },
+        wager: game.wager,
         turn: (pieceTranslator as any)[game.turn],
         index: parseInt(game.index),
     }

@@ -6,10 +6,11 @@ import React, { Component, CSSProperties } from "react"
 import { Alert, Button, Col, Form, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap"
 import { CheckersSigningStargateClient } from "src/checkers_signingstargateclient"
 import { checkersChainId, getCheckersChainInfo } from "src/types/checkers/chain"
-import {} from "src/types/checkers/extensions-gui"
 import "./NewGame.css"
 import PlayerAiCheckbox from "./PlayerAiCheckbox"
 import PlayerNameInput from "./PlayerNameInput"
+import PlayerWagerInput from "./PlayerWagerInput"
+import Long from "long"
 
 declare global {
     interface Window extends KeplrWindow {}
@@ -35,14 +36,17 @@ interface INewGameModalState {
 export default class NewGameModal extends Component<INewGameModalProps, INewGameModalState> {
     private readonly linkStyles: CSSProperties = {
         color: "white",
-        display: "block",
-        height: "100%",
-        textDecoration: "none",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexDirection: "row",
+        height: '100%',
     }
     private readonly p1NameRef: React.RefObject<PlayerNameInput>
     private readonly p2NameRef: React.RefObject<PlayerNameInput>
     private readonly p1AIRef: React.RefObject<PlayerAiCheckbox>
     private readonly p2AIRef: React.RefObject<PlayerAiCheckbox>
+    private readonly wagerRef: React.RefObject<PlayerWagerInput>
 
     public constructor(props: INewGameModalProps) {
         super(props)
@@ -55,6 +59,7 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
         this.p2NameRef = React.createRef()
         this.p1AIRef = React.createRef()
         this.p2AIRef = React.createRef()
+        this.wagerRef = React.createRef()
 
         this.handleSubmit = this.handleSubmit.bind(this)
     }
@@ -90,7 +95,7 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
             <Modal isOpen={this.props.shown} onExit={this.props.close} size="lg" tabIndex={-1}>
                 <ModalHeader toggle={this.props.close}>Create A New Game</ModalHeader>
                 <ModalBody>
-                    <p>Set the names of the players</p>
+                    <p>Set the addresses of the players</p>
                     <Form>
                         <Row>
                             <Col xs={6}>
@@ -114,14 +119,23 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
                     </Alert>
                 </ModalBody>
                 <ModalFooter>
-                    <div style={this.linkStyles} onClick={this.handleSubmit}>
-                        <Button color="success" size="lg">
-                            Play Game!
-                        </Button>
-                    </div>
-                    <Button color="danger" size="lg" onClick={this.props.close}>
-                        Cancel
-                    </Button>
+                    <Form>
+                        <Row>
+                            <Col xs={5}>
+                                <PlayerWagerInput ref={this.wagerRef}/>
+                            </Col>
+                            <Col xs={7}>
+                                    <div style={this.linkStyles}>
+                                        <Button color="success" size="lg" onClick={this.handleSubmit} >
+                                            Play Game!
+                                        </Button>
+                                        <Button color="danger" size="lg" onClick={this.props.close}>
+                                            Cancel
+                                        </Button>
+                                    </div>
+                            </Col>
+                        </Row>
+                    </Form>
                 </ModalFooter>
             </Modal>
         )
@@ -132,10 +146,12 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
             this.p1NameRef.current &&
             this.p2NameRef.current &&
             this.p1AIRef.current &&
-            this.p2AIRef.current
+            this.p2AIRef.current && 
+            this.wagerRef.current
         ) {
             const { name: p1Name, isValid: p1Valid } = this.p1NameRef.current.state
             const { name: p2Name, isValid: p2Valid } = this.p2NameRef.current.state
+            const { wager: wager } = this.wagerRef.current.state
 
             if (
                 this.p1AIRef.current.state.checked &&
@@ -156,7 +172,7 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
 
             if (p1Valid && p2Valid) {
                 const { creator, signingClient } = await this.getSigningStargateClient()
-                const index: string = await signingClient.createGuiGame(creator, p1Name, p2Name)
+                const index: string = await signingClient.createGuiGame(creator, p1Name, p2Name, Long.fromNumber(wager) )
                 this.props.close()
                 window.location.replace(`/play/${index}`)
             } else {
