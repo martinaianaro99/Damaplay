@@ -8,38 +8,43 @@ The code is implemented using Ingite CLI v0.22.1 on OS Linux. The application is
 FROM --platform=linux ubuntu:22.04 as base ARG BUILDARCH ENV GO_VERSION=1.20.4 ENV IGNITE_VERSION=0.22.1 ENV NODE_VERSION=16.x ENV MOCKGEN_VERSION=1.6.0 ENV PROTOC_VERSION=21.7
 ## Intalling
 
- - git clone the github repo;
-- rename as "checkers";
-- Create the image. 
+- Git clone the github repo
+- Create the Docker image
+$ sudo docker build -f Dockerfile-ubuntu . -t checkers_i
 
-$ docker build -f Dockerfile-ubuntu . -t checkers_i
+- Build the Docker container
+$ sudo docker create --name checkers -i -v $(pwd):/checkers -w /checkers -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 checkers_i
 
-- build container
+- Start docker container 
+$ sudo docker start checkers
 
-$ docker create --name checkers -i -v $(pwd):/checkers -w /checkers -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 checkers_i
+- Launch the chain
+$ sudo docker exec -it checkers ignite chain serve 
 
-- start docker container $ docker start checkers
-- run server on it
-
-$ docker exec -it checkers ignite chain serve ( with --reset-once to reset the game).
-
+- Add --reset-once to reset the chain and launch it
+$ sudo docker exec -it checkers ignite chain serve --reset-once
  
- - to visualize the container id "docker ps --all";
- - copy the id into container_id "sudo docker exec -it <container_id> bash";
- - cd client
- - npm start
- - surfing to website "localhost:3000"
- - add in file .bashrc the 2 lines
+- Enter the bash in a new tab
+$ sudo docker exec -it checkers bash";
 
-"export alice="$(sudo docker exec checkers checkersd keys show alice -a)"
+- Add (default) environment variables
+$ export REST_URL=http://0.0.0.0:1317 
+$ export REST_URL=http://0.0.0.0:25667
 
-export bob="$(sudo docker exec checkers checkersd keys show bob -a)";
+- Launch the frontend
+$ cd client 
+$ npm start
 
-- source .bashrc or reopen terminal
+- Open browser to "http://0.0.0.0:3000"
+
+- Add in file .bashrc the 2 lines to set default alice and bob accounts
+$ export alice="$(sudo docker exec checkers checkersd keys show alice -a)"
+$ export bob="$(sudo docker exec checkers checkersd keys show bob -a)"
+
 
 ## Match with Alice (red) and Bob (black)
 
-1. to check player credit (of Alice)
+1. To check player credit (of Alice)
 
 docker exec -it checkers checkersd query bank balances $alice balances: -amount: "100000000" denom: stake -amount: "20000" denom: token pagination: next_key: null total: "0"
 
