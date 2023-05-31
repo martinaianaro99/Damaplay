@@ -22,7 +22,7 @@ const ScoreBar = (props: IScoreBarProps) => {
     : {props.p1.score}
   </div>
   <div style={{ marginLeft: "20px" }}>
-    wager: {props.wager}💰
+    Prize: {props.wager}💰
   </div>
   <div style={{ flex: 1, textAlign: "right" }}>
     <span className="truncated-text" style={{color:"red"}}>

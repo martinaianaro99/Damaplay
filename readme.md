@@ -29,13 +29,13 @@ $ sudo docker exec -it checkers bash";
 
 - Add (default) environment variables
 $ export REST_URL=http://0.0.0.0:1317 
-$ export REST_URL=http://0.0.0.0:25667
+$ export RPC_URL=http://0.0.0.0:26657
 
 - Launch the frontend
 $ cd client 
 $ npm start
 
-- Open browser to "http://0.0.0.0:3000"
+- Open browser to "http://localhost:3000"
 
 - Add in file .bashrc the 2 lines to set default alice and bob accounts
 $ export alice="$(sudo docker exec checkers checkersd keys show alice -a)"
@@ -81,11 +81,11 @@ docker exec -it checkers bash -c "checkersd query checkers show-stored-game 1 --
 
  1. Install addon Kepler in browser and register on it.
  2. Copy cosmos address.
- 3. Create credit in stakes with typing repeatdly this command. Each time adds 100 000 stakes.
+ 3. Add stakes running this command. Each time adds 100 000 stakes.
 
 curl --request POST --header "Content-Type: application/json" --data '{"address":"cosmos_address","denom":"stake"}' localhost:4500
 
-4. To check the your credit.
+4. To check an address credit.
 
 docker exec -it checkers checkersd query bank balances cosmos_address
 
