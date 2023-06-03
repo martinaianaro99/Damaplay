@@ -33,7 +33,7 @@ const Faucet = (props: IFaucetProps) => {
         <h1>Faucet</h1>
         <div>
             <h3>Insert your address and press the button.</h3>
-            <h3>{amount} STAKE will be sent to you.</h3>
+            <h3>{amount} STAKE tokens will be sent to you.</h3>
         </div>
         <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
             <div style={{ width: "200px" }}>
