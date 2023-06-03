@@ -1,58 +1,61 @@
-import http, { IncomingMessage, RequestOptions } from "http"
 import _ from "../../environment"
 
 export const httpRequest = async (
-    url: string | URL,
-    options: RequestOptions,
+    url: string | Request,
+    options: RequestInit,
     postData: string,
-): Promise<string> =>
-    new Promise((resolve, reject) => {
-        let all = ""
-        const req = http.request(url, options, (response: IncomingMessage) => {
-            response.setEncoding("utf8")
-            response.on("error", reject)
-            response.on("end", () => {
-                if (400 <= response.statusCode!) reject(all)
-                else resolve(all)
-            })
-            response.on("data", (chunk) => (all = all + chunk))
-        })
-        req.write(postData)
-        req.end()
-    })
+): Promise<string> => {
+    const response = await fetch(url, {
+        ...options,
+        body: postData,
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+    }
+
+    return await response.text();
+};
 
 export const askFaucet = async (
     address: string,
     tokens: { [denom: string]: number },
-): Promise<string | string[]> =>
-    askFaucetComsJs(address, tokens).catch(() => askFaucetIgniteCli(address, tokens))
+): Promise<string | string[]> => {
+    try {
+        return await askFaucetComsJs(address, tokens);
+    } catch (error) {
+        return askFaucetIgniteCli(address, tokens);
+    }
+};
 
 export const askFaucetComsJs = async (
     address: string,
     tokens: { [denom: string]: number },
-): Promise<string[]> =>
-    Promise.all(
-        Object.keys(tokens).map((denom) =>
-            httpRequest(
-                `${process.env.FAUCET_URL}/credit`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                },
-                JSON.stringify({ address, denom }),
-            ),
-        ),
-    )
+): Promise<string[]> => {
+    const requests = Object.keys(tokens).map((denom) =>
+        httpRequest(
+            `${process.env.FAUCET_URL}/credit`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            },
+            JSON.stringify({ address, denom }),
+        )
+    );
+
+    return Promise.all(requests);
+};
 
 export const askFaucetIgniteCli = async (
     address: string,
     tokens: { [denom: string]: number },
 ): Promise<string> =>
     httpRequest(
-        process.env.FAUCET_URL,
+        process.env.FAUCET_URL as string,
         { method: "POST" },
         JSON.stringify({
             address: address,
             coins: Object.entries(tokens).map(([denom, value]) => value + denom),
         }),
-    )
+    );

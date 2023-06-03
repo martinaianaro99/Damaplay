@@ -6,6 +6,7 @@ import Footer from "./Footer"
 import GameContainer from "./Game/GameContainer"
 import Loading from "./Loading"
 import MenuContainer from "./Menu/MenuContainer"
+import FaucetContainer from "./Faucet/FaucetContainer"
 
 const styles: CSSProperties = {
     minWidth: "800px",
@@ -48,6 +49,7 @@ const App = ({ rpcUrl }: AppProps) => {
                 <div style={titleStyles}>Damaplay</div>
                 <Routes>
                     <Route path="menu" element={<MenuContainer location={""} rpcUrl={rpcUrl} />} />
+                    <Route path="faucet" element={<FaucetContainer location={""} rpcUrl={rpcUrl}/>} />
                     <Route path="play/:index" element={<AsyncGameContainer rpcUrl={rpcUrl} />} />
                     <Route path="howtoplay" element={<AsyncHowToPlay goBack={goBack} />} />
                     <Route path="*" element={<Navigate to="/menu" replace={true} />} />
