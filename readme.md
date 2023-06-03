@@ -10,37 +10,55 @@ FROM --platform=linux ubuntu:22.04 as base ARG BUILDARCH ENV GO_VERSION=1.20.4 E
 
 - Git clone the github repo
 - Create the Docker image
+```
 $ sudo docker build -f Dockerfile-ubuntu . -t checkers_i
+```
+
 
 - Build the Docker container
+```
 $ sudo docker create --name checkers -i -v $(pwd):/checkers -w /checkers -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 checkers_i
+```
 
 - Start docker container 
+```
 $ sudo docker start checkers
+```
 
 - Launch the chain
+```
 $ sudo docker exec -it checkers ignite chain serve 
+```
 
 - Add --reset-once to reset the chain and launch it
+```
 $ sudo docker exec -it checkers ignite chain serve --reset-once
- 
+```
+
 - Enter the bash in a new tab
+```
 $ sudo docker exec -it checkers bash";
+```
 
 - Add (default) environment variables
+```
 $ export REST_URL=http://0.0.0.0:1317 
 $ export RPC_URL=http://0.0.0.0:26657
+```
 
 - Launch the frontend
+```
 $ cd client 
 $ npm start
+```
 
 - Open browser to "http://localhost:3000"
 
 - Add in file .bashrc the 2 lines to set default alice and bob accounts
+```
 $ export alice="$(sudo docker exec checkers checkersd keys show alice -a)"
 $ export bob="$(sudo docker exec checkers checkersd keys show bob -a)"
-
+```
 
 ## Match with Alice (red) and Bob (black)
 
