@@ -36,7 +36,7 @@ $ sudo docker exec -it checkers ignite chain serve --reset-once
 
 7. Enter the bash in a new tab
 ```
-$ sudo docker exec -it checkers bash";
+$ sudo docker exec -it checkers bash
 ```
 
 8. Add (default) environment variables
