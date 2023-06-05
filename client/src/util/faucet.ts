@@ -1,5 +1,7 @@
 import _ from "../../environment"
 
+const FAUCET_URL = "http://0.0.0.0:4500"
+
 export const httpRequest = async (
     url: string | Request,
     options: RequestInit,
@@ -35,7 +37,7 @@ export const askFaucetComsJs = async (
 ): Promise<string[]> => {
     const requests = Object.keys(tokens).map((denom) =>
         httpRequest(
-            `${process.env.FAUCET_URL}/credit`,
+            `${FAUCET_URL}/credit`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -52,7 +54,7 @@ export const askFaucetIgniteCli = async (
     tokens: { [denom: string]: number },
 ): Promise<string> =>
     httpRequest(
-        process.env.FAUCET_URL as string,
+        FAUCET_URL as string,
         { method: "POST" },
         JSON.stringify({
             address: address,

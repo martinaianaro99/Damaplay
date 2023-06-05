@@ -3,8 +3,7 @@ import {} from "../../types/checkers/extensions-gui"
 import Faucet from "./Faucet"
 
 interface IFaucetContainerProps {
-    location?: any
-    rpcUrl: string
+    goBack: () => void
 }
 
 interface IFaucetContainerState {
@@ -20,7 +19,7 @@ export default class FaucetContainer extends Component<IFaucetContainerProps, IF
     public render(): JSX.Element {
         return (
             <Faucet
-                rpcUrl={this.props.rpcUrl}
+                goBack={this.props.goBack}
             />
         )
     }

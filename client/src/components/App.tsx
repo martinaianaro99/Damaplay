@@ -49,7 +49,7 @@ const App = ({ rpcUrl }: AppProps) => {
                 <div style={titleStyles}>Damaplay</div>
                 <Routes>
                     <Route path="menu" element={<MenuContainer location={""} rpcUrl={rpcUrl} />} />
-                    <Route path="faucet" element={<FaucetContainer location={""} rpcUrl={rpcUrl}/>} />
+                    <Route path="faucet" element={<FaucetContainer goBack={goBack} />} />
                     <Route path="play/:index" element={<AsyncGameContainer rpcUrl={rpcUrl} />} />
                     <Route path="howtoplay" element={<AsyncHowToPlay goBack={goBack} />} />
                     <Route path="*" element={<Navigate to="/menu" replace={true} />} />

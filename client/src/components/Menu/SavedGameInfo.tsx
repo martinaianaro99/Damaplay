@@ -35,8 +35,8 @@ const SavedGameInfo = (props: ISavedGameInfoProps) => (
             <span style={{ color: "red" }}>{props.info.p2.score}</span>
         </h4>
         <p>
-            Created: {formatDate(new Date(props.info.created))} Last played:{" "}
-            {formatDate(new Date(props.info.last))}
+            Created: {formatDate(new Date(props.info.created))}
+            
         </p>
     </div>
     //     )}
