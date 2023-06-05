@@ -3,11 +3,10 @@ import { OfflineSigner } from "@cosmjs/proto-signing"
 import { GasPrice } from "@cosmjs/stargate"
 import { Window as KeplrWindow } from "@keplr-wallet/types"
 import React, { Component, CSSProperties } from "react"
-import { Alert, Button, Col, Form, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap"
+import { Button, Col, Form, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap"
 import { CheckersSigningStargateClient } from "src/checkers_signingstargateclient"
 import { checkersChainId, getCheckersChainInfo } from "src/types/checkers/chain"
 import "./NewGame.css"
-import PlayerAiCheckbox from "./PlayerAiCheckbox"
 import PlayerNameInput from "./PlayerNameInput"
 import PlayerWagerInput from "./PlayerWagerInput"
 import Long from "long"
@@ -44,8 +43,6 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
     }
     private readonly p1NameRef: React.RefObject<PlayerNameInput>
     private readonly p2NameRef: React.RefObject<PlayerNameInput>
-    private readonly p1AIRef: React.RefObject<PlayerAiCheckbox>
-    private readonly p2AIRef: React.RefObject<PlayerAiCheckbox>
     private readonly wagerRef: React.RefObject<PlayerWagerInput>
 
     public constructor(props: INewGameModalProps) {
@@ -57,8 +54,6 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
         }
         this.p1NameRef = React.createRef()
         this.p2NameRef = React.createRef()
-        this.p1AIRef = React.createRef()
-        this.p2AIRef = React.createRef()
         this.wagerRef = React.createRef()
 
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -105,18 +100,7 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
                                 <PlayerNameInput playerNumber={2} ref={this.p2NameRef} />
                             </Col>
                         </Row>
-                        <Row>
-                            <Col xs={6}>
-                                <PlayerAiCheckbox playerNumber={1} ref={this.p1AIRef} />
-                            </Col>
-                            <Col xs={6}>
-                                <PlayerAiCheckbox playerNumber={2} ref={this.p2AIRef} />
-                            </Col>
-                        </Row>
                     </Form>
-                    <Alert color="danger" isOpen={this.state.showAlert}>
-                        Both Players Cannot be AI controlled
-                    </Alert>
                 </ModalBody>
                 <ModalFooter>
                     <Form>
@@ -145,31 +129,11 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
         if (
             this.p1NameRef.current &&
             this.p2NameRef.current &&
-            this.p1AIRef.current &&
-            this.p2AIRef.current && 
             this.wagerRef.current
         ) {
             const { name: p1Name, isValid: p1Valid } = this.p1NameRef.current.state
             const { name: p2Name, isValid: p2Valid } = this.p2NameRef.current.state
             const { wager: wager } = this.wagerRef.current.state
-
-            if (
-                this.p1AIRef.current.state.checked &&
-                this.p2AIRef.current.state.checked &&
-                /* this is a little hack to allow both players
-                    to be controlled by the "AI"
-                    run in console window.allowBothAI = true
-                */
-                // @ts-ignore
-                !window.allowBothAI
-            ) {
-                event.preventDefault()
-                this.setState({ showAlert: true })
-                return
-            } else {
-                this.setState({ showAlert: false })
-            }
-
             if (p1Valid && p2Valid) {
                 const { creator, signingClient } = await this.getSigningStargateClient()
                 const index: string = await signingClient.createGuiGame(creator, p1Name, p2Name, Long.fromNumber(wager) )
@@ -178,8 +142,6 @@ export default class NewGameModal extends Component<INewGameModalProps, INewGame
             } else {
                 event.preventDefault()
             }
-        } else {
-            event.preventDefault()
         }
     }
 }

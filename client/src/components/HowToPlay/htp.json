@@ -44,7 +44,7 @@
     {
         "title": "Saving the Game",
         "contents": [
-            "A game is saved to your borwser's local stroage every time a move is made or player's name is changed mid-game. This means that you can be in the middle of several games at the same time, as well as close the tab and come back later to the same place in the game (as long as you are still using the same browser).",
+            "A game is saved to your borwser's local stroage every time a move is made. This means that you can be in the middle of several games at the same time, as well as close the tab and come back later to the same place in the game (as long as you are still using the same browser).",
             "It can be seen whether or not a game is saved by looking at the icon on the right-most side of the score bar, while inside of a game. If the floppy disk icon is green, the current state of the game has been saved and it is safe to exit the game. If the floppy disk icon is red, the game has not been saved and all porgress will be lost once the game has been exited."
         ]
     },
@@ -52,16 +52,13 @@
         "title": "Creating a New Game",
         "contents": [
             "A new game can be created by clicking the \"New Game\" button, from the menu screen.",
-            "Here, you are able to set names for each player, as well as whether or not a player should be an \"AI Player\". When this option is checked, that player will be controlled by the computer.",
-            "Only a single player is able to be an \"AI Player\" in a game."
+            "Here, you are able to set names for each player."
         ]
     },
     {
         "title": "Setting Player Names",
         "contents": [
-            "Player names must be 1-20 characters long, and cannot include either the &lt; or &gt; characters.",
-            "A player's name can be set while a new game is being created or from inside of an active game.",
-            "To change/set a player's name, from inside of an active game, simply click on their name next to their score, near the top of the screen."
+            "Player names must be the cosmos address."
         ]
     }
 ]
