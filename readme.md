@@ -121,7 +121,7 @@ docker exec -it checkers checkersd query bank balances cosmos_address
 ```
 sudo docker exec -it checkers checkersd query checkers list-stored-game
 ```
-7. To check all games into FIFO queue
+6. To check all games into FIFO queue
 ```
 sudo docker exec -it checkers checkersd query checkers show-system-info
 ```
