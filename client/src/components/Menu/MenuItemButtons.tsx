@@ -1,10 +1,10 @@
+
 import React, { CSSProperties } from "react"
 import * as FontAwesome from "react-icons/fa"
 import { Link } from "react-router-dom"
 import { Button } from "reactstrap"
 
 interface IMenuItemsButtonsProps {
-    deleteGame: () => void
     showButtons: boolean
     index: number
 }
@@ -17,7 +17,7 @@ const MenuItemButtons = (props: IMenuItemsButtonsProps) => {
         margin: "4px 0px",
         textDecoration: "none",
     }
-    return (
+     return (
         <div>
             {props.showButtons && (
                 <div>
@@ -26,9 +26,6 @@ const MenuItemButtons = (props: IMenuItemsButtonsProps) => {
                             Resume Game <FontAwesome.FaShareSquare />
                         </Button>
                     </Link>
-                    <Button block={true} color="danger" className="delete" onClick={props.deleteGame}>
-                        Delete Game <FontAwesome.FaTrash />
-                    </Button>
                 </div>
             )}
         </div>

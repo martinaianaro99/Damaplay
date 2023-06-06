@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { Col, ListGroupItem, Row } from "reactstrap"
 import { IGameInfo } from "../../sharedTypes"
-import MenuItemButtons from "./MenuItemButtons"
 import SavedGameInfo from "./SavedGameInfo"
+import MenuItemButtons from "./MenuItemButtons"
 
 interface IMenuItemProps {
     deleteGame: (index: number) => void
@@ -23,7 +23,6 @@ export default class MenuItem extends Component<IMenuItemProps, IMenuItemState> 
     }
 
     public render() {
-        const deleteGame = () => this.props.deleteGame(this.props.index)
         const mouseEnter = () => this.setState({ showButtons: true })
         const mouseLeave = () => this.setState({ showButtons: false })
         return (
@@ -42,7 +41,6 @@ export default class MenuItem extends Component<IMenuItemProps, IMenuItemState> 
                     </Col>
                     <Col xs={4}>
                         <MenuItemButtons
-                            deleteGame={deleteGame}
                             index={this.props.index}
                             showButtons={this.state.showButtons}
                         />
