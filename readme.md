@@ -117,6 +117,14 @@ curl --request POST --header "Content-Type: application/json" --data '{"address"
 ```
 docker exec -it checkers checkersd query bank balances cosmos_address
 ```
+5. To check the listo of all stored games
+```
+sudo docker exec -it checkers checkersd query checkers list-stored-game
+```
+7. To check all games into FIFO queue
+```
+sudo docker exec -it checkers checkersd query checkers show-system-info
+```
 
 ## Learn more
 
